@@ -31,7 +31,7 @@ public class MainController {
 		Process makeCaptureDir = run.exec("mkdir ./src/main/resources/capture");
 		System.out.println(makeCaptureDir.waitFor());
 
-		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
+		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds*1000);
 		System.out.println(takeVideo.waitFor());
 		// Analyze Video
 		
@@ -49,7 +49,7 @@ public class MainController {
 		// Organize Results
 		Process convertVideo = run.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
 		System.out.println(convertVideo.waitFor());
-		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
+		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/public/img");
 		System.out.println(moveVideoToStatic.waitFor());
 		Thread.sleep(6000);
 		System.out.println("Here");
