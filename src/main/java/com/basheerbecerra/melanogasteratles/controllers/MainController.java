@@ -25,11 +25,11 @@ public class MainController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/record")
 	public String record(RedirectAttributes redirectAttributes,
-			@RequestParam(value = "seconds", defaultValue = "5") Integer seconds) throws IOException {
+			@RequestParam(value = "seconds", defaultValue = "5") Integer seconds) throws IOException, InterruptedException {
 		Runtime run = Runtime.getRuntime();
 		// Capture Video
-		run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
-		
+		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
+		takeVideo.waitFor();
 		// Analyze Video
 		
 		
@@ -44,8 +44,10 @@ public class MainController {
 		
 		
 		// Organize Results
-		
-		run.exec("mv ./src/main/resources/capture/capture.h264 ./src/main/resources/static");
+		Process convertVideo = run.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
+		convertVideo.waitFor();
+		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
+		moveVideoToStatic.waitFor();
 		
 		System.out.println("Here");
 		redirectAttributes.addFlashAttribute("test", "test");
