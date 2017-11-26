@@ -28,6 +28,9 @@ public class MainController {
 			@RequestParam(value = "seconds", defaultValue = "5") Integer seconds) throws IOException, InterruptedException {
 		Runtime run = Runtime.getRuntime();
 		// Capture Video
+		Process makeCaptureDir = run.exec("mkdir ./src/main/resources/capture");
+		makeCaptureDir.waitFor();
+
 		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
 		takeVideo.waitFor();
 		// Analyze Video
@@ -48,7 +51,7 @@ public class MainController {
 		convertVideo.waitFor();
 		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
 		moveVideoToStatic.waitFor();
-		
+
 		System.out.println("Here");
 		redirectAttributes.addFlashAttribute("test", "test");
 		return "redirect:/results";
