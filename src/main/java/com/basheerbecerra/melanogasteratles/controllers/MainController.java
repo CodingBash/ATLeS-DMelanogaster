@@ -30,10 +30,10 @@ public class MainController {
 		Runtime run = Runtime.getRuntime();
 		// Capture Video
 		Process makeCaptureDir = run.exec("mkdir ./src/main/resources/capture");
-		makeCaptureDir.waitFor();
+		System.out.println(makeCaptureDir.waitFor());
 
 		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
-		takeVideo.waitFor();
+		System.out.println(takeVideo.waitFor());
 		// Analyze Video
 
 		// Edit Video (Overlay)
@@ -43,12 +43,11 @@ public class MainController {
 		// Retrieve Stats
 
 		// Organize Results
-		Process convertVideo = run
-				.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
-		convertVideo.waitFor();
+		Process convertVideo = run.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
+		System.out.println(convertVideo.waitFor());
 		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
-		moveVideoToStatic.waitFor();
-
+		System.out.println(moveVideoToStatic.waitFor());
+		Thread.sleep(6000);
 		System.out.println("Here");
 		redirectAttributes.addFlashAttribute("test", "test");
 		return "redirect:/results";
