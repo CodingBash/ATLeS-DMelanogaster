@@ -1,12 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1"/>
+<meta charset="ISO-8859-1" />
 <title>Insert title here</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous" />
 </head>
 <body>
-	<form method="POST" action="/record">
-		<button type="submit">Record</button>
-	</form>
+	<div class="row">
+		<h3 class="text-center">
+			Automated Tracking and Learning for <i>Drosophila Melanogaster</i>
+			Experiments
+		</h3>
+	</div>
+	<div class="row text-center">
+		<h4>Record an Experiment</h4>
+	<!-- 	<form method="POST" action="/record"> -->
+			<button id="recordButton" type="submit" href="#" class="btn btn-info btn-lg">
+				<span class="glyphicon glyphicon-record"></span> Record
+			</button>
+		<!--   </form> -->
+	</div>
+	<br/>
+	<div class="row text-center">
+		<h4>Or Upload an Experiment</h4>
+		<form method="POST" action="/record">
+			<label class="btn btn-default"> Browse <input type="file"
+				hidden="hidden" style="display: none"/>
+			</label>
+		</form>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	function pulsate(){
+		  $( "#recordButton" ).animate({
+		    opacity: 0.3
+		  }, 1000, function() {
+		    $( this ).after($( "#recordButton" ).animate({
+		        opacity: 1
+		    }, 1000, function() {
+		    	pulsate();
+		    })
+		    )
+		  });
+		}
+	$( "#recordButton" ).click(function(){
+		pulsate();
+	});
+	
+	</script>
 </body>
 </html>
