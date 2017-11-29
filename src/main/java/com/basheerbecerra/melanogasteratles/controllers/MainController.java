@@ -45,6 +45,8 @@ public class MainController {
 		// Organize Results
 		Process convertVideo = run.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
 		System.out.println(convertVideo.waitFor());
+		Process removePreviousVideo = run.exec("rm -f ./src/main/resources/static/capture.mp4");
+		removePreviousVideo.waitFor();
 		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
 		System.out.println(moveVideoToStatic.waitFor());
 		Thread.sleep(6000);
