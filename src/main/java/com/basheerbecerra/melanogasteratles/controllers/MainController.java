@@ -32,7 +32,7 @@ public class MainController {
 		Process makeCaptureDir = run.exec("mkdir ./src/main/resources/capture");
 		System.out.println(makeCaptureDir.waitFor());
 
-		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds);
+		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds*1000);
 		System.out.println(takeVideo.waitFor());
 		// Analyze Video
 
