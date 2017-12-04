@@ -1,9 +1,11 @@
 import cv2
 
 backsub = cv2.bgsegm.createBackgroundSubtractorMOG()#background subtraction to isolate moving cars
-capture = cv2.VideoCapture("fly.avi") #change to destination on your pc 
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output2.avi',fourcc, 20.0, (640,480))
+capture = cv2.VideoCapture("src/main/resources/static/upload.mp4") #change to destination on your pc
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+w = capture.get(cv2.CAP_PROP_FRAME_WIDTH);
+h = capture.get(cv2.CAP_PROP_FRAME_HEIGHT);
+out = cv2.VideoWriter('src/main/resources/static/capture.avi',fourcc, 20.0, (int(w),int(h)))
 i = 0
 minArea=1
 
@@ -18,7 +20,7 @@ while capture.isOpened():
     im2, contours, hierarchy = cv2.findContours(erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for contour in contours:
         moments=cv2.moments(contour,True)               #moments method applied
-        area=moments['m00']    
+        area=moments['m00']
         if moments['m00'] >= minArea:
             x=int(moments['m10']/moments['m00'])
             y=int (moments['m01']/moments['m00'])

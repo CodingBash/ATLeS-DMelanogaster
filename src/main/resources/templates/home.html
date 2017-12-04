@@ -41,10 +41,10 @@
 			<br />
 			<div class="row text-center">
 				<h4>Or Upload an Experiment</h4>
-				<form method="POST" action="/record">
+				<form method="POST" enctype="multipart/form-data" action="/upload">
 					<span> <input type="file"
 						style="visibility: hidden; width: 1px;" id='${multipartFilePath}'
-						name='${multipartFilePath}'
+						name='file'
 						onchange="$(this).parent().find('span').html($(this).val().replace('C:\\fakepath\\', ''))"
 						required="required" /> <!-- Chrome security returns 'C:\fakepath\'  -->
 						<input class="btn btn-primary" type="button" value="Browse File"
