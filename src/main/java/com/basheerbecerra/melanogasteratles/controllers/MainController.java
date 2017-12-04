@@ -91,7 +91,8 @@ public class MainController {
 		/*
 		 * Delete everything from static directory
 		 */
-		service.deleteAll();
+		Process deleteAll = run.exec("rm -rf src/main/resources/static/");
+		deleteAll.waitFor();
 		/*
 		 * Store the uploaded file
 		 */
