@@ -93,6 +93,13 @@ public class MainController {
 		 */
 		Process deleteAll = run.exec("rm -rf src/main/resources/static/");
 		deleteAll.waitFor();
+		
+		/*
+		 * Recreate static directory
+		 * 
+		 */
+		Process createStaticDir = run.exec("mkdir src/main/resources/static/");
+		createStaticDir.waitFor();
 		/*
 		 * Store the uploaded file
 		 */
