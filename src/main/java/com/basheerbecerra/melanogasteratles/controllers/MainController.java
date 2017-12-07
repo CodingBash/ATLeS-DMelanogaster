@@ -90,10 +90,51 @@ public class MainController {
 		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/upload.mp4 ./src/main/resources/static");
 		System.out.println(moveVideoToStatic.waitFor());
 
+		//TODO: Duplicate code, move to method
 		/*
-		 * Redirect to the result page
+		 * Run the OpenCV analysis on the uploaded file
 		 */
-		return "redirect:/results";
+		Process runAnalysis = run.exec("python analyze.py");
+		int analysisExitCode = runAnalysis.waitFor();
+
+		/*
+		 * If analysis was successful
+		 */
+		if (analysisExitCode == 0) {
+			/*
+			 * Convert the analysis result video from .avi to .mp4 (only works with environment with ffmpeg installed)
+			 */
+			Process convert = run.exec(
+					"ffmpeg -i src/main/resources/static/capture.avi -c:v libx264 -crf 19 -preset slow -c:a libfdk_aac -b:a 192k -ac 2 src/main/resources/static/capture.mp4");
+			
+			/*
+			 * Stream feed to prevent deadlock
+			 */
+			InputStream stderr = convert.getErrorStream();
+			InputStreamReader isr = new InputStreamReader(stderr);
+			BufferedReader br = new BufferedReader(isr);
+			String line = null;
+			while ((line = br.readLine()) != null)
+				System.out.println(line);
+			int convertExitCode = convert.waitFor();
+			
+			/*
+			 * If conversion was successful
+			 */
+			if (convertExitCode == 0) {
+				/*
+				 * Redirect to result page
+				 */
+				return "redirect:/results";
+			}
+		}
+		
+		/*
+		 * If an errors, redirect back to home page 
+		 * TODO: Add flash attribute with error
+		 */
+		return "redirect:/";
+		
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/results")
