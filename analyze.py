@@ -2,7 +2,7 @@ import cv2
 
 backsub = cv2.bgsegm.createBackgroundSubtractorMOG()#background subtraction to isolate moving cars
 capture = cv2.VideoCapture("src/main/resources/static/upload.mp4") #change to destination on your pc
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
 w = capture.get(cv2.CAP_PROP_FRAME_WIDTH);
 h = capture.get(cv2.CAP_PROP_FRAME_HEIGHT);
 out = cv2.VideoWriter('src/main/resources/static/capture.avi',fourcc, 20.0, (int(w),int(h)))
