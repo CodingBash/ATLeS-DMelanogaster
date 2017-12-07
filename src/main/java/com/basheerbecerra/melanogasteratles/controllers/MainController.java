@@ -95,6 +95,16 @@ public class MainController {
 		 * Run the OpenCV analysis on the uploaded file
 		 */
 		Process runAnalysis = run.exec("python analyze.py");
+		/*
+		 * Stream feed to prevent deadlock
+		 */
+		InputStream stderr1 = runAnalysis.getErrorStream();
+		InputStreamReader isr1 = new InputStreamReader(stderr1);
+		BufferedReader br1 = new BufferedReader(isr1);
+		String line1 = null;
+		while ((line1 = br1.readLine()) != null)
+			System.out.println(line1);
+		
 		int analysisExitCode = runAnalysis.waitFor();
 		
 		System.out.println("OpenCV Analysis Result: " + analysisExitCode);
