@@ -98,7 +98,7 @@ public class MainController {
 		/*
 		 * Stream feed to prevent deadlock
 		 */
-		InputStream stderr1 = runAnalysis.getErrorStream();
+		InputStream stderr1 = runAnalysis.getInputStream();
 		InputStreamReader isr1 = new InputStreamReader(stderr1);
 		BufferedReader br1 = new BufferedReader(isr1);
 		String line1 = null;
