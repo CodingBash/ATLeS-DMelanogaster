@@ -158,28 +158,33 @@ public class MainController {
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes)
 			throws InterruptedException, IOException {
 		Runtime run = Runtime.getRuntime();
-		
 		/*
 		 * Delete everything from static directory
 		 */
 		Process deleteAll = run.exec("rm -rf src/main/resources/static/");
-		deleteAll.waitFor();
-		
+		System.out.println("Delete All in Static Result: " + deleteAll.waitFor());
 		/*
 		 * Recreate static directory
 		 * 
 		 */
 		Process createStaticDir = run.exec("mkdir src/main/resources/static/");
-		createStaticDir.waitFor();
+		System.out.println("Create static directory: " +createStaticDir.waitFor());
 		/*
 		 * Store the uploaded file
 		 */
 		service.store(file);
-
+		System.out.println("Stored Filed");
 		/*
 		 * Run the OpenCV analysis on the uploaded file
 		 */
 		Process runAnalysis = run.exec("python analyze.py");
+		InputStream stderr1 = runAnalysis.getInputStream();
+		InputStreamReader isr1 = new InputStreamReader(stderr1);
+		BufferedReader br1 = new BufferedReader(isr1);
+		String line1 = null;
+		while ((line1 = br1.readLine()) != null)
+			System.out.println(line1);
+		
 		int analysisExitCode = runAnalysis.waitFor();
 		
 		System.out.println("OpenCV Analysis Result: " + analysisExitCode);
