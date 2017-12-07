@@ -36,7 +36,7 @@ public class MainController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/record")
 	public String record(RedirectAttributes redirectAttributes,
-			@RequestParam(value = "seconds", defaultValue = "5") Integer seconds)
+			@RequestParam(value = "length", defaultValue = "5") Integer seconds)
 			throws IOException, InterruptedException {
 		Runtime run = Runtime.getRuntime();
 
@@ -44,51 +44,51 @@ public class MainController {
 		 * Make directory to contain captured video from pi
 		 */
 		Process makeCaptureDir = run.exec("mkdir ./src/main/resources/capture");
-		System.out.println(makeCaptureDir.waitFor());
+		System.out.println("Make Capture Directory Result: " + makeCaptureDir.waitFor());
 
 		/*
 		 * Take the video (only works on pi environment)
 		 */
 		Process takeVideo = run.exec("raspivid -o ./src/main/resources/capture/capture.h264 -t " + seconds * 1000);
-		System.out.println(takeVideo.waitFor());
+		System.out.println("Take Video Result: " + takeVideo.waitFor());
 
 		/*
 		 * Convert the video from .h264 to .mp4 (only works on environment w/ MP4Box)
 		 */
 		Process convertVideo = run
 				.exec("MP4Box -add ./src/main/resources/capture/capture.h264 ./src/main/resources/capture/capture.mp4");
-		System.out.println(convertVideo.waitFor());
+		System.out.println("Convert Capture from .h264 to .mp4 Result: " + convertVideo.waitFor());
 
 		/*
 		 * Remove any previous capture from static folder
 		 */
 		Process removePreviousVideo = run.exec("rm -f ./src/main/resources/static/capture.mp4");
-		System.out.println(removePreviousVideo.waitFor());
+		System.out.println("Remove Previous Video Result: " + removePreviousVideo.waitFor());
 
 		/*
 		 * Rename file
 		 */
 		Process renameToUpload= run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/capture/upload.mp4");
-		System.out.println(renameToUpload.waitFor());
+		System.out.println("Rename Capture to Upload Result: " + renameToUpload.waitFor());
 		
 		/*
 		 * Delete everything from static directory
 		 */
 		Process deleteAll = run.exec("rm -rf src/main/resources/static/");
-		System.out.println(deleteAll.waitFor());
+		System.out.println("Delete static directory result: " + deleteAll.waitFor());
 		
 		/*
 		 * Recreate static directory
 		 * 
 		 */
 		Process createStaticDir = run.exec("mkdir src/main/resources/static/");
-		System.out.println(createStaticDir.waitFor());
+		System.out.println("Recreate static directory result: " + createStaticDir.waitFor());
 		
 		/*
 		 * Move the capture result to the static folder
 		 */
 		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/upload.mp4 ./src/main/resources/static");
-		System.out.println(moveVideoToStatic.waitFor());
+		System.out.println("Move capture to static directory result: " + moveVideoToStatic.waitFor());
 
 		//TODO: Duplicate code, move to method
 		/*
@@ -96,7 +96,8 @@ public class MainController {
 		 */
 		Process runAnalysis = run.exec("python analyze.py");
 		int analysisExitCode = runAnalysis.waitFor();
-
+		
+		System.out.println("OpenCV Analysis Result: " + analysisExitCode);
 		/*
 		 * If analysis was successful
 		 */
@@ -117,7 +118,7 @@ public class MainController {
 			while ((line = br.readLine()) != null)
 				System.out.println(line);
 			int convertExitCode = convert.waitFor();
-			
+			System.out.println("Convert Analysis Video from .avi to .mp4 Result: " + convertExitCode);
 			/*
 			 * If conversion was successful
 			 */
@@ -170,7 +171,8 @@ public class MainController {
 		 */
 		Process runAnalysis = run.exec("python analyze.py");
 		int analysisExitCode = runAnalysis.waitFor();
-
+		
+		System.out.println("OpenCV Analysis Result: " + analysisExitCode);
 		/*
 		 * If analysis was successful
 		 */
@@ -191,7 +193,7 @@ public class MainController {
 			while ((line = br.readLine()) != null)
 				System.out.println(line);
 			int convertExitCode = convert.waitFor();
-			
+			System.out.println("Convert Analysis Video from .avi to .mp4 Result: " + convertExitCode);
 			/*
 			 * If conversion was successful
 			 */

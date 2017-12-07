@@ -8,7 +8,7 @@ h = capture.get(cv2.CAP_PROP_FRAME_HEIGHT);
 out = cv2.VideoWriter('src/main/resources/static/capture.avi',fourcc, 20.0, (int(w),int(h)))
 i = 0
 minArea=1
-
+count = 1
 while capture.isOpened():
     ret, frame = capture.read()
     if ret == False:
@@ -26,12 +26,14 @@ while capture.isOpened():
             y=int (moments['m01']/moments['m00'])
             if x>336 and x<700 and y>225 and y<227:       #range of line coordinates for values on left lane
                i=i+1
-               print(i)
+               print("Fly Crossed: " + str(i))
     cv2.putText(frame,'COUNT: %r' %i, (10,30), cv2.FONT_HERSHEY_SIMPLEX,
                            1, (255, 0, 0), 2)
     cv2.drawContours(frame, contours, -1, (0,255,0), 3)
     #cv2.imshow("Track", frame)
     out.write(frame)
+    print("Writing frame: " + str(count))
+    count = count + 1
 capture.release()
 out.release()
 cv2.destroyAllWindows()
