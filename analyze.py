@@ -11,6 +11,7 @@ minArea=1
 count = 1
 while capture.isOpened():
     ret, frame = capture.read()
+    print("Analyzing frame: " + str(count))
     if ret == False:
         break
     if frame is None:
@@ -32,7 +33,6 @@ while capture.isOpened():
     cv2.drawContours(frame, contours, -1, (0,255,0), 3)
     #cv2.imshow("Track", frame)
     out.write(frame)
-    print("Writing frame: " + str(count))
     count = count + 1
 capture.release()
 out.release()
