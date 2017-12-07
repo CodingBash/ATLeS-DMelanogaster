@@ -66,9 +66,28 @@ public class MainController {
 		System.out.println(removePreviousVideo.waitFor());
 
 		/*
+		 * Rename file
+		 */
+		Process renameToUpload= run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/capture/upload.mp4");
+		System.out.println(renameToUpload.waitFor());
+		
+		/*
+		 * Delete everything from static directory
+		 */
+		Process deleteAll = run.exec("rm -rf src/main/resources/static/");
+		System.out.println(deleteAll.waitFor());
+		
+		/*
+		 * Recreate static directory
+		 * 
+		 */
+		Process createStaticDir = run.exec("mkdir src/main/resources/static/");
+		System.out.println(createStaticDir.waitFor());
+		
+		/*
 		 * Move the capture result to the static folder
 		 */
-		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/capture.mp4 ./src/main/resources/static");
+		Process moveVideoToStatic = run.exec("mv ./src/main/resources/capture/upload.mp4 ./src/main/resources/static");
 		System.out.println(moveVideoToStatic.waitFor());
 
 		/*
